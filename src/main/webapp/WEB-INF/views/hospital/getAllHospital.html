@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospitals</title>
+  <style>table,
+  td {
+    border: 1px solid #333;
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+  }
+
+  thread,
+  tfoot {
+    background-color: #333;
+    color: #fff;
+  }
+  </style>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      padding: 3px;
+    }
+  </style>
+</head>
+<body>
+<table class="table table-bordered ">
+  <thead class="table-dark">
+  <tr>
+    <th scope="colgroup">Id</th>
+    <th scope="col">Hospital name</th>
+    <th scope="col">Hospital address</th>
+    <!--        <th scope="col">Groups</th>-->
+    <th scope="col">Doctor</th>
+    <th scope="col">Update</th>
+    <th scope="col">Delete</th>
+  </tr>
+  </thead>
+  <tbody class="table-success">
+  <tr th:each="hospital: ${hospitals}">
+    <td th:text="${hospital.id}"></td>
+    <td th:text="${hospital.name}"></td>
+    <td th:text="${hospital.address}"></td>
+
+    <!--        <td><a th:href="@{/groups/{id}(id=${company.getId()})}">-->
+    <!--            <button>Groups</button>-->
+    <!--        </a>-->
+    <!--        </td>-->
+
+<!--    <td><a th:href="@{/courses/{id}(id=${hospital.id()})}">-->
+<!--      <button>Courses</button>-->
+<!--    </a>-->
+<!--    </td>-->
+
+    <td><a th:href="@{/updateHospital(hospitalId=${hospital.id})}">
+      <button>Update</button>
+    </a>
+    </td>
+
+    <td> <a th:href="@{/deleteHospital/(hospitalId=${hospital.id})}">
+      <button>Delete</button>
+    </a>
+    </td>
+
+  </tr>
+  </tbody>
+</table>
+<br><br><br><br>
+
+<div style="text-align: center">
+    <a th:href="@{/addHospital}">
+        <button style="font-size: 25px;"> Add Hospital </button>
+    </a>
+</div>
+</body>
+</html>

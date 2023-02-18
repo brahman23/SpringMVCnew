@@ -1,11 +1,15 @@
 package peaksoft.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDate;
+
+import static jakarta.persistence.CascadeType.*;
+
+
 @Entity
 @Table(name = "appointments")
 @Getter
@@ -17,6 +21,22 @@ public class Appointment {
     @SequenceGenerator(name = "appointment_seq", sequenceName = "appointment_seq", allocationSize = 2)
     private Long id;
     private LocalDate data;
+    @ManyToOne(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY)
+    private Patient patient;
+    @ManyToOne(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY)
+    private Department department;
+    @ManyToOne(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY)
+    private Doctor doctor;
 
+    public Appointment(LocalDate data, Patient patient, Department department, Doctor doctor) {
+        this.data = data;
+        this.patient = patient;
+        this.department = department;
+        this.doctor = doctor;
+    }
 
+    public Appointment(Long id, LocalDate data) {
+        this.id = id;
+        this.data = data;
+    }
 }

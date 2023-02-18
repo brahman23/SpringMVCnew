@@ -1,10 +1,14 @@
 package peaksoft.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.*;
+
 
 @Entity
 @Table(name = "doctors")
@@ -25,4 +29,18 @@ public class Doctor {
     @Column
     private String email;
 
+    @ManyToOne(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.EAGER)
+    private Hospital hospital;
+    @OneToMany(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY,mappedBy = "doctor")
+    private List<Appointment> appointments;
+    @ManyToMany(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY,mappedBy = "doctors")
+    private List<Department> departments;
+
+    public Doctor(Long id, String firstName, String lastName, String position, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.position = position;
+        this.email = email;
+    }
 }

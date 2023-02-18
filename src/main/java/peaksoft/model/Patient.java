@@ -1,11 +1,16 @@
 package peaksoft.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import peaksoft.model.gender.Gender;
 
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.*;
+
 
 @Entity
 @Table(name = "patients")
@@ -25,5 +30,29 @@ public class Patient {
     private String phoneNumber;
     private Gender gender;
     private String email;
+    @ManyToOne(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.EAGER)
+    private Hospital hospital;
+//    public void addCourse(Hospital hospital){
+//        if (hospital==null){
+//            hospital=new ArrayList<>();
+//        }
+//        hospital.add(hospital);
+//    }
+    @OneToMany(cascade = {DETACH,MERGE,REFRESH,REMOVE},fetch = FetchType.LAZY,mappedBy = "patient")
+    private List<Appointment> appointments;
+    public void addCourse(Appointment appointment){
+        if (appointments==null){
+            appointments = new ArrayList<>();
+        }
+        appointments.add(appointment);
+    }
 
+    public Patient(Long id, String firstName, String lastName, String phoneNumber, Gender gender, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.email = email;
+    }
 }

@@ -1,11 +1,14 @@
 package peaksoft.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.CascadeType.*;
 
 
 @Entity
@@ -22,7 +25,42 @@ public class Hospital {
     private String name;
 
     private String address;
-//    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    private List<Doctor> doctors;
+    @OneToMany(cascade = {DETACH,REFRESH,MERGE,REMOVE},fetch = FetchType.LAZY,mappedBy = "hospital")
+    private List<Doctor> doctors;
+    public void addDoctor(Doctor doctor){
+        if (doctors==null){
+            doctors=new ArrayList<>();
+        }
+        doctors.add(doctor);
+    }
+    @OneToMany(cascade = {DETACH,REFRESH,MERGE,REMOVE},fetch = FetchType.LAZY,mappedBy = "hospital")
+    private List<Department> departments;
+    public void addDepartment(Department department){
+        if (departments==null){
+            departments=new ArrayList<>();
+        }
+        departments.add(department);
+    }
+    @OneToMany(cascade = {DETACH,REFRESH,MERGE,REMOVE},fetch = FetchType.LAZY)
+    private List<Appointment> appointments;
+    public void addAppointment(Appointment appointment){
+        if (appointments==null){
+            appointments=new ArrayList<>();
+        }
+        appointments.add(appointment);
+    }
+    @OneToMany(cascade = {DETACH,REFRESH,MERGE,REMOVE},fetch = FetchType.LAZY,mappedBy = "hospital")
+    private List<Patient> patients;
+    public void addPatient(Patient patient){
+        if (patients==null){
+            patients=new ArrayList<>();
+        }
+        patients.add(patient);
+    }
 
+    public Hospital(Long id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
 }
