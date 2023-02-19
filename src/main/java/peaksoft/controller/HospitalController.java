@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import peaksoft.model.Hospital;
 import peaksoft.service.HospitalService;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
+@RequestMapping("/getAllHospital")
 public class HospitalController {
 
-    private HospitalService hospitalS;
+    private final HospitalService hospitalS;
+
     @Autowired
     public HospitalController(HospitalService hospitalService) {
         this.hospitalS = hospitalService;
     }
-    @GetMapping("/getAll")
-    public String getAll(Model model){
-        List<Hospital> hospitals = hospitalS.getAllHospitals();
-        model.addAttribute("hospitals",hospitals);
+    @GetMapping
+    public String getAllHospital(Model model){
+//        List<Hospital> hospitals = hospitalS.getAllHospitals();
+        model.addAttribute("hospitals",hospitalS.getAllHospitals());
         return "/hospital/getAllHospital";
     }
     @GetMapping("addHospital")
@@ -37,27 +37,28 @@ public class HospitalController {
         }
 
         hospitalS.addHospital(hospital);
-        return "redirect:/getAll";
+        return "redirect:/getAllHospital";
     }
-    @GetMapping("updateHospital")
-    public String updateHospital(@RequestParam("hospitalId") Long id, Model model) {
+    @GetMapping("/{hospitalId}/updateHospital")
+    public String updateHospital(@PathVariable("hospitalId") Long id, Model model) {
         Hospital hospital = hospitalS.getHospitalById(id);
         model.addAttribute("hospital", hospital);
         return "/hospital/updateHospital";
     }
 
-    @PutMapping("/updateHospital")
-    public String saveUpdateHospital(@ModelAttribute("hospital")Hospital hospital, BindingResult bindingResult) {
+    @PostMapping("/{hospitalId}/updateHospital")
+    public String saveUpdateHospital(@ModelAttribute("hospital")Hospital hospital, BindingResult bindingResult,@PathVariable("hospitalId")Long id) {
         if (bindingResult.hasErrors()){
             return "/hospital/updateHospital";
         }
-        hospitalS.updateHospital(hospital);
-        return "redirect:/getAll";
+        hospitalS.updateHospital(id, hospital);
+        return "redirect:/getAllHospital";
     }
-    @DeleteMapping("/deleteHospital")
-    public String deleteCompany(@RequestParam("hospitalId") Long id) {
-        hospitalS.deleteHospital(hospitalS.getHospitalById(id));
-        return "redirect:/getAll";
+    @GetMapping("{hospitalId}/deleteHospital")
+    public String deleteHospital(@PathVariable("hospitalId") Long hospitalId) {
+        hospitalS.deleteHospital(hospitalId);
+        System.out.println("1");
+        return "redirect:/getAllHospital";
     }
 
 }

@@ -4,27 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import peaksoft.model.Hospital;
 import peaksoft.repository.HospitalRepository;
+import peaksoft.service.HospitalService;
 
 import java.util.List;
 @Service
+public class HospitalServiceImpl implements HospitalService {
 
-public class HospitalService implements peaksoft.service.HospitalService {
+    private final HospitalRepository hospitalRepository;
 
-    private HospitalRepository hospitalRepository;
     @Autowired
-    public HospitalService(HospitalRepository hospitalRepository) {
+    public HospitalServiceImpl(HospitalRepository hospitalRepository) {
         this.hospitalRepository = hospitalRepository;
     }
 
     @Override
     public List<Hospital> getAllHospitals() {
         try {
-            hospitalRepository.getAllHospitals();
+            return hospitalRepository.getAllHospitals();
 
         }catch (RuntimeException e){
-            System.out.println(e.getMessage());
+            throw new RuntimeException();
         }
-        return null;
     }
 
     @Override
@@ -40,7 +40,8 @@ public class HospitalService implements peaksoft.service.HospitalService {
     @Override
     public Hospital getHospitalById(Long hospitalId) {
         try {
-                hospitalRepository.getHospitalById(hospitalId);
+               Hospital h = hospitalRepository.getHospitalById(hospitalId);
+               return h;
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
@@ -48,19 +49,21 @@ public class HospitalService implements peaksoft.service.HospitalService {
     }
 
     @Override
-    public void updateHospital(Hospital hospital) {
+    public Hospital updateHospital(Long id,Hospital hospital) {
         try {
-                hospitalRepository.updateHospital(hospital);
+               return hospitalRepository.updateHospital(id,hospital);
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
+        return null;
 
     }
 
     @Override
-    public void deleteHospital(Hospital hospital) {
+    public void deleteHospital(Long id) {
         try {
-                hospitalRepository.deleteHospital(hospital);
+                hospitalRepository.deleteHospital(id);
+            System.out.println(3);
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
