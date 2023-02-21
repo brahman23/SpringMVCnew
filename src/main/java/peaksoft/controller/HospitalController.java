@@ -54,7 +54,7 @@ public class HospitalController {
         hospitalS.updateHospital(id, hospital);
         return "redirect:/getAllHospital";
     }
-    @GetMapping("{hospitalId}/deleteHospital")
+    @DeleteMapping("{hospitalId}/deleteHospital")
     public String deleteHospital(@PathVariable("hospitalId") Long hospitalId) {
         hospitalS.deleteHospital(hospitalId);
         System.out.println("1");

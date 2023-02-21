@@ -18,7 +18,7 @@ import static jakarta.persistence.CascadeType.*;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctor_seq")
-    @SequenceGenerator(name = "doctor_seq", sequenceName = "doctor_seq", allocationSize = 2)
+    @SequenceGenerator(name = "doctor_seq", sequenceName = "doctor_seq", allocationSize = 1)
     private Long id;
     @Column(name = "first_name")
     private String firstName;

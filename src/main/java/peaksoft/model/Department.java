@@ -31,4 +31,10 @@ public class Department {
         this.name = name;
     }
 
+    public Department(Long id, String name, Hospital hospital, List<Doctor> doctors) {
+        this.id = id;
+        this.name = name;
+        this.hospital = hospital;
+        this.doctors = doctors;
+    }
 }

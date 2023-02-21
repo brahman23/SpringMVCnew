@@ -85,7 +85,7 @@
     <th>ID
     <th>Name
     <th>Address
-    <th>Add
+
     <th>Update
     <th>Delete
     <th>Doctor
@@ -96,17 +96,15 @@
   </thead>
   <tbody>
   <tr th:each="hospital:${hospitals}">
-    <td th:text="${hospital.id}">
-    <td th:text="${hospital.name}">
-    <td th:text="${hospital.address}">
+    <h1> <td th:text="${hospital.id}">
+        <td th:text="${hospital.name}">
+        <td th:text="${hospital.address}">
+    </h1>
 
 
-    <td><a th:href="@{/getAllHospital/addHospital}">
-      <button>Add</button>
-    </a>
-    </td>
 
-    <td><a th:method="UPDATE" th:href="@{/getAllHospital/{hospitalId}/updateHospital(hospitalId=${hospital.id})}">
+
+    <td>  <a th:method="UPDATE" th:href="@{/getAllHospital/{hospitalId}/updateHospital(hospitalId=${hospital.id})}">
       <button>Update</button>
     </a>
     </td>
@@ -115,7 +113,7 @@
     </a>
     </td>
 
-    <td><a th:href="@{/hospitals/{id}(id=${hospital.getId()})}">
+    <td><a th:href="@{/doctors/{id}(id=${hospital.getId()})}">
       <button>Doctors</button>
     </a>
     </td>
@@ -123,7 +121,7 @@
       <button>Patients</button>
     </a>
     </td>
-    <td><a th:href="@{/hospitals/{id}(id=${hospital.getId()})}">
+    <td><a th:href="@{/departments/{id}(id=${hospital.getId()})}">
       <button>Department</button>
     </a>
     </td>
@@ -136,7 +134,13 @@
 
   <tr>
 
+
   </tbody>
+
 </table>
+<td><a th:href="@{/getAllHospital/addHospital}">
+  <button>Add</button>
+</a>
+</td>
 </body>
 </html>

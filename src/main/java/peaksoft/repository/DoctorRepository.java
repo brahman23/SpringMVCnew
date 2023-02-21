@@ -1,4 +1,17 @@
 package peaksoft.repository;
 
+import peaksoft.model.Doctor;
+
+import java.util.List;
+
 public interface DoctorRepository {
+    List<Doctor> getAllDoctors(Long id);
+
+    void addDoctors(Doctor doctor,Long id);
+
+    Doctor getDoctorById(Long doctorId);
+
+    void updateDoctor(Long Id, Doctor doctor);
+
+    void deleteDoctor(Long id);
 }
