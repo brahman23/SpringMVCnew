@@ -40,7 +40,7 @@ public class Patient {
 //    }
     @OneToMany(cascade = {DETACH,MERGE,REFRESH,REMOVE},fetch = FetchType.LAZY,mappedBy = "patient")
     private List<Appointment> appointments;
-    public void addCourse(Appointment appointment){
+    public void addAppointment(Appointment appointment){
         if (appointments==null){
             appointments = new ArrayList<>();
         }

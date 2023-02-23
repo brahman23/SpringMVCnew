@@ -5,11 +5,13 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import peaksoft.model.Appointment;
 import peaksoft.model.Department;
 import peaksoft.model.Doctor;
 import peaksoft.model.Hospital;
 import peaksoft.repository.DepartmentRepository;
 
+import java.io.IOException;
 import java.util.List;
 @Repository
 @Transactional
@@ -25,6 +27,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     public List<Department> getAllDepartment(Long id) {
         return entityManager.createQuery("select d from Department d where d.hospital.id = :id", Department.class).setParameter("id", id).getResultList();
     }
+    @Override
+    public List<Department> getAllDepartmentList(Long id) {
+        return entityManager.createQuery("select d from Department d where d.hospital.id = :id", Department.class).setParameter("id", id).getResultList();
+    }
+
 
     @Override
     public void addDepartment(Department department, Long id) {
@@ -62,5 +69,38 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
         }
 
 
+
+
+    }
+    @Override
+     public void assignDepartment(Long doctorId, Long departmentId) throws IOException {
+        Department department = entityManager.find(Department.class, departmentId);
+        Doctor doctor = entityManager.find(Doctor.class, doctorId);
+        if (doctor.getDepartments() != null) {
+            for (Department d : doctor.getDepartments()) {
+                if (d.getId() == departmentId) {
+                    throw new IOException("myndai group bar!!!");
+                }
+            }
+        }
+        department.addDoctor(doctor);
+        doctor.addDepartment(department);
+        entityManager.merge(department);
+        entityManager.merge(doctor);
+
+    }
+
+
+    @Override
+    public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException {
+        Department department = entityManager.find(Department.class,departmentId);
+        Appointment appointment = entityManager.find(Appointment.class,appointmentId);
+        if (appointment.getDepartment() != null) {
+            Department d = appointment.getDepartment();
+            appointment.setDepartment(department);
+            entityManager.merge(department);
+            entityManager.merge(appointment);
+
+    }
     }
 }

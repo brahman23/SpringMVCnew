@@ -5,10 +5,13 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import peaksoft.model.Appointment;
+import peaksoft.model.Department;
 import peaksoft.model.Doctor;
 import peaksoft.model.Hospital;
 import peaksoft.repository.DoctorRepository;
 
+import java.io.IOException;
 import java.util.List;
 @Repository
 @Transactional
@@ -26,12 +29,18 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     public List<Doctor> getAllDoctors(Long id) {
         return entityManager.createQuery("select d from Doctor d where d.hospital.id = :id",Doctor.class).setParameter("id", id).getResultList();
     }
+    @Override
+    public List<Doctor> getAllDoctorsList(Long id) {
+        return entityManager.createQuery("select d from Doctor d where d.hospital.id = :id",Doctor.class).setParameter("id", id).getResultList();
+    }
 
     @Override
     public void addDoctors(Doctor doctor,Long id) {
         Hospital hospital =entityManager.find(Hospital.class,id);
         hospital.addDoctor(doctor);
+        hospital.addCountD();
         doctor.setHospital(hospital);
+
         entityManager.merge(doctor);
 
 
@@ -56,8 +65,28 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public void deleteDoctor(Long id) {
         Doctor doctor = entityManager.find(Doctor.class, id);
-        doctor.setHospital(null);
+        doctor.getHospital().deleteCountD();
+//        doctor.setHospital(null);
         entityManager.remove(doctor);
+
+    }
+
+
+    @Override
+    public void assignDoctor(Long doctorId, Long appointmentId) throws IOException {
+        Appointment appointment = entityManager.find(Appointment.class, appointmentId);
+        Doctor doctor = entityManager.find(Doctor.class, doctorId);
+        if (doctor.getAppointments() != null) {
+            for (Appointment a : doctor.getAppointments()) {
+                if (a.getId() == appointmentId) {
+                    throw new IOException("myndai  bar!!!");
+                }
+            }
+        }
+        appointment.setDoctor(doctor);
+        doctor.addAppointment(appointment);
+        entityManager.merge(appointment);
+        entityManager.merge(doctor);
 
     }
 }

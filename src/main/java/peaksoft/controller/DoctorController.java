@@ -5,20 +5,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import peaksoft.model.Department;
 import peaksoft.model.Doctor;
+import peaksoft.service.DepartmentService;
 import peaksoft.service.DoctorService;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("")
 public class DoctorController {
     private final DoctorService doctorService;
+    private final DepartmentService departmentService;
     @Autowired
-    public DoctorController(DoctorService doctorService) {
+    public DoctorController(DoctorService doctorService, DepartmentService departmentService) {
         this.doctorService = doctorService;
+        this.departmentService = departmentService;
     }
     @GetMapping("/doctors/{id}")
-    public String getAllDoctors(@PathVariable Long id, Model model){
+    public String getAllDoctors(@PathVariable Long id, Model model , @ModelAttribute("department")Department department){
         model.addAttribute("doctors",doctorService.getAllDoctors(id));
+        model.addAttribute("departments",departmentService.getAllDepartmentList(id));
         model.addAttribute("hospital",id);
 
         return "/doctor/doctors";
@@ -58,9 +65,20 @@ public class DoctorController {
         return "redirect:/doctors/"+hospitalId;
     }
 
-    @DeleteMapping("/{hospitalId}/{id}/deleteDoctor")
+    @GetMapping("/{hospitalId}/{id}/deleteDoctor")
     public String deleteDoctor(@PathVariable("id") Long id, @PathVariable("hospitalId") Long hospitalId) {
         doctorService.deleteDoctor(id);
         return "redirect:/doctors/"+hospitalId;
+    }
+
+    @PostMapping("{doctorId}/assignDepartment")
+    private String assignDepartment(
+            @PathVariable("doctorId") Long doctorId,
+            @ModelAttribute("department") Department department)
+            throws IOException {
+        Doctor doctor = doctorService.getDoctorById(doctorId);
+        System.out.println(department);
+        departmentService.assignDepartment(doctorId,department.getId());
+        return "redirect:/doctors/"+doctor.getHospital().getId();
     }
 }

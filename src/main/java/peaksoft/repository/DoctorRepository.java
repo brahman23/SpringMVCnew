@@ -2,10 +2,12 @@ package peaksoft.repository;
 
 import peaksoft.model.Doctor;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface DoctorRepository {
     List<Doctor> getAllDoctors(Long id);
+    List<Doctor> getAllDoctorsList(Long id);
 
     void addDoctors(Doctor doctor,Long id);
 
@@ -14,4 +16,6 @@ public interface DoctorRepository {
     void updateDoctor(Long Id, Doctor doctor);
 
     void deleteDoctor(Long id);
+
+    void assignDoctor(Long doctorId, Long appointmentId) throws IOException;
 }

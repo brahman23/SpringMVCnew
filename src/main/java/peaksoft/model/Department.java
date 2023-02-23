@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.*;
@@ -25,6 +26,12 @@ public class Department {
     private Hospital hospital;
     @ManyToMany(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY)
     private List<Doctor> doctors;
+    public void addDoctor(Doctor doctor){
+        if (doctors==null){
+            doctors=new ArrayList<>();
+        }
+        doctors.add(doctor);
+    }
 
     public Department(Long id, String name) {
         this.id = id;

@@ -25,6 +25,28 @@ public class Hospital {
     private String name;
 
     private String address;
+
+
+    private int countPatient;
+
+    public  void  addCount(){
+        countPatient++;
+    }
+
+    public void deleteCount(){
+        countPatient--;
+    }
+
+
+    private int countDoctor;
+
+    public  void  addCountD(){
+        countDoctor++;
+    }
+
+    public void deleteCountD(){
+        countDoctor--;
+    }
     @OneToMany(cascade = {DETACH,REFRESH,MERGE,REMOVE},fetch = FetchType.LAZY,mappedBy = "hospital")
     private List<Doctor> doctors;
     public void addDoctor(Doctor doctor){

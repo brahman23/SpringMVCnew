@@ -6,6 +6,7 @@ import peaksoft.model.Department;
 import peaksoft.repository.DepartmentRepository;
 import peaksoft.service.DepartmentService;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -24,6 +25,16 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         return null;
 
+    }
+
+    @Override
+    public List<Department> getAllDepartmentList(Long id) {
+        try {
+            return departmentRepository.getAllDepartmentList(id);
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -51,6 +62,18 @@ public class DepartmentServiceImpl implements DepartmentService {
             System.out.println(e.getMessage());
         }
 
+
+    }
+
+    @Override
+    public void assignDepartment(Long doctorId, Long departmentId) throws IOException {
+        departmentRepository.assignDepartment(doctorId, departmentId);
+
+    }
+
+    @Override
+    public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException {
+        departmentRepository.assignDepartmentToAppointment(appointmentId, departmentId);
 
     }
 }

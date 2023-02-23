@@ -27,14 +27,14 @@
   th {
     border-bottom: 1px solid #364043;
     color: #E2B842;
-    font-size: 1.85em;
-    font-weight: 200;
+    font-size: 1.15em;
+    font-weight: 100;
     padding: 0.5em 1em;
     text-align: left;
   }
   td {
     color: #fff;
-    font-weight: 300;
+    font-weight: 200;
     padding: 0.65em 1em;
   }
   .disabled td {
@@ -85,7 +85,8 @@
     <th>ID
     <th>Name
     <th>Address
-
+    <th>DoctorsCount
+    <th>PatientsCount
     <th>Update
     <th>Delete
     <th>Doctor
@@ -93,12 +94,15 @@
     <th>Department
     <th>Appointment
 
+
   </thead>
   <tbody>
   <tr th:each="hospital:${hospitals}">
     <h1> <td th:text="${hospital.id}">
         <td th:text="${hospital.name}">
         <td th:text="${hospital.address}">
+        <td th:text="${hospital.countDoctor}">
+        <td th:text="${hospital.countPatient}">
     </h1>
 
 
@@ -117,7 +121,7 @@
       <button>Doctors</button>
     </a>
     </td>
-    <td><a th:href="@{/hospitals/{id}(id=${hospital.getId()})}">
+    <td><a th:href="@{/patients/{id}(id=${hospital.getId()})}">
       <button>Patients</button>
     </a>
     </td>
@@ -125,7 +129,7 @@
       <button>Department</button>
     </a>
     </td>
-    <td><a th:href="@{/hospitals/{id}(id=${hospital.getId()})}">
+    <td><a th:href="@{/appointments/{id}(id=${hospital.getId()})}">
       <button>Appointment</button>
     </a>
     </td>
