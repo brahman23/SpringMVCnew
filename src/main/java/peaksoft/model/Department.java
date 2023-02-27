@@ -1,6 +1,7 @@
 package peaksoft.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +22,11 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_seq")
     @SequenceGenerator(name = "department_seq", sequenceName = "department_seq", allocationSize = 2)
     private Long id;
+    @NotEmpty(message = "Name should not be empty")
     private String name;
     @ManyToOne(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.EAGER)
     private Hospital hospital;
-    @ManyToMany(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {DETACH,MERGE,REFRESH},fetch = FetchType.EAGER,mappedBy = "departments")
     private List<Doctor> doctors;
     public void addDoctor(Doctor doctor){
         if (doctors==null){

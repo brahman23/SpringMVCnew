@@ -18,20 +18,29 @@
             method="post">
 
         <input type="hidden" name="id" th:field="*{id}">
-        <input type="text" name="companyName" th:field="*{firstName}" placeholder=" Name">
+        <input type="text" required name="firstName" th:field="*{firstName}" placeholder=" Name">
         <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>
         <br><br>
-        <input type="text" name="companyName" th:field="*{lastName}" placeholder=" LastName">
+        <input type="text" required name="lastName" th:field="*{lastName}" placeholder=" LastName">
         <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</div>
         <br><br>
-        <input type="text" name="companyName" th:field="*{email}" placeholder=" Name">
+        <input type="text" required name="email" th:field="*{email}" placeholder=" Email">
         <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</div>
         <br><br>
-        <input type="text" name="companyName" th:field="*{phoneNumber}" placeholder="phoneNumber">
+        <input type="text" name="phoneNumber" th:field="*{phoneNumber}" placeholder="phoneNumber">
         <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">phoneNumber</div>
         <br><br>
-        <input type="text" name="companyName" th:field="*{gender}" placeholder="gender">
-        <div style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">gender</div>
+        Gender
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:field="*{gender}" value="MALE" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">male</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:field="*{gender}" value="FEMALE" name="flexRadioDefault" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">female</label>
+        </div>
+        <p style="color: red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">gender error</p>
+        <br>
         <br><br>
 
         <input type="submit" value="Add">

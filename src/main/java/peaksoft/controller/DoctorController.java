@@ -1,5 +1,6 @@
 package peaksoft.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,10 +41,10 @@ public class DoctorController {
         return "/doctor/addDoctor";
     }
     @PostMapping("/{id}/saveDoctor")
-    public String saveDoctor(@ModelAttribute("doctor") Doctor doctor, BindingResult bindingResult,
+    public String saveDoctor(@ModelAttribute("doctor") @Valid Doctor doctor, BindingResult bindingResult,
                              @PathVariable Long id) {
         if (bindingResult.hasErrors()){
-            return "redirect:/doctors/"+id+"/addDoctor";
+            return "/doctor/addDoctor";
         }
         doctorService.addDoctors(doctor,id);
         return "redirect:/doctors/"+id;
@@ -60,7 +61,10 @@ public class DoctorController {
     @PostMapping("/{hospitalId}/{id}/saveUpdateDoctor")
     public String saveUpdateDoctor(@PathVariable("hospitalId") Long hospitalId,
                                    @PathVariable("id") Long id,
-                                   @ModelAttribute("doctor") Doctor doctor) {
+                                   @ModelAttribute("doctor") @Valid Doctor doctor, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "/doctor/updateDoctors";
+        }
         doctorService.updateDoctor(id,doctor);
         return "redirect:/doctors/"+hospitalId;
     }

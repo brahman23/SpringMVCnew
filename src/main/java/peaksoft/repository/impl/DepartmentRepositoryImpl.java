@@ -9,6 +9,7 @@ import peaksoft.model.Appointment;
 import peaksoft.model.Department;
 import peaksoft.model.Doctor;
 import peaksoft.model.Hospital;
+import peaksoft.model.exeptiion.MyExeption;
 import peaksoft.repository.DepartmentRepository;
 
 import java.io.IOException;
@@ -60,9 +61,10 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     @Override
     public void deleteDepartment(Long id) {
         try {
-            System.out.println(111);
             Department department = entityManager.find(Department.class, id);
-//        department.setHospital(null);
+            for (int i = 0; i < department.getDoctors().size(); i++) {
+                department.getDoctors().get(i).getDepartments().remove(department);
+            }
             entityManager.remove(department);
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
@@ -73,13 +75,13 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     }
     @Override
-     public void assignDepartment(Long doctorId, Long departmentId) throws IOException {
+     public void assignDepartment(Long doctorId, Long departmentId){
         Department department = entityManager.find(Department.class, departmentId);
         Doctor doctor = entityManager.find(Doctor.class, doctorId);
         if (doctor.getDepartments() != null) {
             for (Department d : doctor.getDepartments()) {
                 if (d.getId() == departmentId) {
-                    throw new IOException("myndai group bar!!!");
+                    throw new MyExeption();
                 }
             }
         }
@@ -92,15 +94,20 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
 
     @Override
-    public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException {
+    public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) {
         Department department = entityManager.find(Department.class,departmentId);
         Appointment appointment = entityManager.find(Appointment.class,appointmentId);
         if (appointment.getDepartment() != null) {
-            Department d = appointment.getDepartment();
-            appointment.setDepartment(department);
-            entityManager.merge(department);
-            entityManager.merge(appointment);
+            if (departmentId == appointment.getDepartment().getId()) {
+                System.out.println("mynday bar");
+            }
+            else
+                System.out.println("no");
 
     }
+        appointment.setDepartment(department);
+        entityManager.merge(department);
+        entityManager.merge(appointment);
+
     }
 }

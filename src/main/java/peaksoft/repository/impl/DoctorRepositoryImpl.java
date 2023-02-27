@@ -66,6 +66,9 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     public void deleteDoctor(Long id) {
         Doctor doctor = entityManager.find(Doctor.class, id);
         doctor.getHospital().deleteCountD();
+        for (int i = 0; i < doctor.getAppointments().size(); i++) {
+            doctor.getAppointments().get(i).setDoctor(null);
+        }
 //        doctor.setHospital(null);
         entityManager.remove(doctor);
 
@@ -74,6 +77,8 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     @Override
     public void assignDoctor(Long doctorId, Long appointmentId) throws IOException {
+        System.out.println("doctor");
+
         Appointment appointment = entityManager.find(Appointment.class, appointmentId);
         Doctor doctor = entityManager.find(Doctor.class, doctorId);
         if (doctor.getAppointments() != null) {

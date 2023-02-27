@@ -2,6 +2,7 @@ package peaksoft.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import peaksoft.model.Appointment;
 import peaksoft.model.Doctor;
 import peaksoft.repository.DoctorRepository;
 import peaksoft.service.DoctorService;
@@ -78,6 +79,11 @@ public class DoctorServiceImpl implements DoctorService {
     public void deleteDoctor(Long id) {
         try {
             System.out.println(1);
+            Doctor doctor = getDoctorById(id);
+            for (Appointment a:doctor.getAppointments()) {
+                a.setDoctor(null);
+                a.setPatient(null);
+            }
             doctorRepository.deleteDoctor(id);
         }catch (RuntimeException e){
             throw new RuntimeException();

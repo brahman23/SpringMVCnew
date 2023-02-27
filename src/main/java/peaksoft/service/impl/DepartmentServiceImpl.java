@@ -73,7 +73,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void assignDepartmentToAppointment(Long appointmentId, Long departmentId) throws IOException {
-        departmentRepository.assignDepartmentToAppointment(appointmentId, departmentId);
+        try {
+            departmentRepository.assignDepartmentToAppointment(appointmentId, departmentId);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
     }
 }

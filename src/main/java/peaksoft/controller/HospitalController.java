@@ -1,12 +1,15 @@
 package peaksoft.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.model.Hospital;
 import peaksoft.service.HospitalService;
+
 
 
 @Controller
@@ -21,17 +24,16 @@ public class HospitalController {
     }
     @GetMapping
     public String getAllHospital(Model model){
-//        List<Hospital> hospitals = hospitalS.getAllHospitals();
         model.addAttribute("hospitals",hospitalS.getAllHospitals());
         return "/hospital/getAllHospital";
     }
-    @GetMapping("addHospital")
+    @GetMapping("/addHospital")
     public String addHospital(Model model){
         model.addAttribute("hospital",new Hospital());
         return "/hospital/addHospital";
     }
-    @PostMapping("saveHospital")
-    public String saveCompany(@ModelAttribute("hospital")Hospital hospital, BindingResult bindingResult) {
+    @PostMapping("/saveHospital")
+    public String saveCompany(@ModelAttribute("hospital") @Valid Hospital hospital, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
             return "/hospital/addHospital";
         }
@@ -47,7 +49,7 @@ public class HospitalController {
     }
 
     @PostMapping("/{hospitalId}/updateHospital")
-    public String saveUpdateHospital(@ModelAttribute("hospital")Hospital hospital, BindingResult bindingResult,@PathVariable("hospitalId")Long id) {
+    public String saveUpdateHospital(@ModelAttribute("hospital") @Valid Hospital hospital, BindingResult bindingResult, @PathVariable("hospitalId")Long id) {
         if (bindingResult.hasErrors()){
             return "/hospital/updateHospital";
         }

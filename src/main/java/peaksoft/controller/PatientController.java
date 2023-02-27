@@ -1,8 +1,10 @@
 package peaksoft.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.model.Department;
 import peaksoft.model.Patient;
@@ -33,8 +35,11 @@ private final PatientService patientService;
         return "/patient/addPatient" ;
     }
     @PostMapping("/{id}/savePatient")
-    public String savePatient(@ModelAttribute("patient")  Patient patient,
+    public String savePatient(@ModelAttribute("patient")  @Valid Patient patient, BindingResult bindingResult,
                                  @PathVariable Long id) {
+        if (bindingResult.hasErrors()){
+            return "/patients/"+id+"/addPatient";
+        }
         patientService.addPatient(patient,id);
         return "redirect:/patients/"+id;
     }
@@ -49,8 +54,11 @@ private final PatientService patientService;
 
     @PostMapping("/{hospitalId}/{id}/saveUpdatePatient")
     public String saveUpdatePatient(@PathVariable("hospitalId") Long hospitalId,
-                                       @PathVariable("id") Long id,
-                                       @ModelAttribute("patient") Patient patient) {
+                                    @PathVariable("id") Long id,
+                                    @ModelAttribute("patient") @Valid Patient patient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "/patient/updatePatient";
+        }
         patientService.updatePatient(id,patient);
         return "redirect:/patients/"+hospitalId;
     }

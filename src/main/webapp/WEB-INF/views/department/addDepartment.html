@@ -13,12 +13,12 @@
 <div>
     <form
             action="#"
-            th:action="@{/{id}/saveDepartment(id=${hospital})}"
+            th:action="@{/departments/{id}/saveDepartment(id=${hospital})}"
             th:object="${department}"
             method="post">
 
-        <input type="hidden" name="id" th:field="*{id}">
-        <input type="text" name="companyName" th:field="*{name}" placeholder=" Name">
+        <input type="hidden"  name="id" th:field="*{id}">
+        <input type="text" required name="name" th:field="*{name}" placeholder=" Name">
         <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
         <br><br>
         <input type="submit" value="Add">

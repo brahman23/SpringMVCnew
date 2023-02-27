@@ -63,6 +63,7 @@ public class PatientRepositoryImpl implements PatientRepository {
     @Override
     public void deletePatient(Long id) {
        Patient patient = entityManager.find(Patient.class, id);
+
        patient.getHospital().deleteCount();
 
         entityManager.remove(patient);
@@ -70,6 +71,8 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public void assignPatient(Long patientId, Long appointmentId) throws IOException {
+        System.out.println("patient");
+
         Appointment appointment = entityManager.find(Appointment.class, appointmentId);
         Patient patient = entityManager.find(Patient.class, patientId);
         if (patient.getAppointments() != null) {

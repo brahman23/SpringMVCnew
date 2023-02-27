@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import peaksoft.model.Appointment;
 import peaksoft.model.Hospital;
+import peaksoft.model.exeptiion.MyExeption;
 import peaksoft.repository.AppointmentRepository;
 
 import java.util.List;
@@ -24,16 +25,17 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     @Override
     public List<Appointment> getAllAppointments(Long id) {
         try {
+
             List<Appointment> list = manager.find(Hospital.class,id).getAppointments();
             list.forEach(System.out::println);
+
 
             return list;
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new MyExeption();
         }
-        System.out.println("exeption all");
-        return null;
+
 
 
     }
@@ -49,14 +51,14 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 //                }
 //            }
             hospital.addAppointment(appointment);
-            manager.merge(appointment);
+//            manager.merge(appointment);
             manager.merge(hospital);
 
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new MyExeption();
         }
-        System.out.println("exeption add");
+
 
     }
 
@@ -67,10 +69,9 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new MyExeption();
         }
-        System.out.println("exeption get");
-        return null;
+
     }
 
     @Override
@@ -82,9 +83,9 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             manager.merge(appointment1);
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            throw new MyExeption();
         }
-        System.out.println("exeption up");
+
 
     }
 
@@ -104,46 +105,9 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
 
             }
-//            manager.remove(appointment);
-////            appointment.setDoctor(null);
-////            appointment.setPatient(null);
-////
-//            for (int i = 0;true; i++) {
-//                Hospital hospitals = manager.find(Hospital.class,i);
-//                System.out.println(i);
-//                if (hospitals != null){
-//                    if (hospitals.getAppointments()!=null && hospitals.getAppointments().size() >= 1) {
-//                        System.out.println("p");
-////                    List<Appointment> appointments = hospitals.getAppointments();
-//                    for (int a = 0; hospitals.getAppointments().get(a).getId() == id  ; a++) {
-////                        System.out.println(a);
-////                        if (id == appointments.get(a).getId()) {
-//                            System.out.println("wasd");
-//                            Hid = hospitals.getId();
-//                            hospitals.getAppointments().remove(a);
-//                            manager.remove(appointment);
-//                            break;
-////                        }
-//                    }
-//                }
-//
-//
-//
-//                    }
-//
-//
-//            }
-
-
-
-
-
-
-
         }catch (Exception e){
-            System.out.println(e.getMessage());
+                throw new MyExeption();
         }
-        System.out.println("exeption delete");
 
     }
 }

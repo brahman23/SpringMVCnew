@@ -17,8 +17,8 @@
             th:object="${appointment}"
             method="post">
 
-        <input type="hidden" name="id" th:field="*{id}">
-        <input type="date" name="companyName" th:field="*{data}" placeholder="Data">
+        <input type="hidden"  name="id" th:field="*{id}">
+        <input type="date" required name="Date" th:field="*{data}" placeholder="Data">
         <div style="color: red" th:if="${#fields.hasErrors('data')}" th:errors="*{data}">Data Error</div>
         <br><br>
 <!--        <input type="text" name="companyName" th:field="*{department}" placeholder=" Department">-->

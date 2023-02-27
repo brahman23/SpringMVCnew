@@ -124,9 +124,42 @@
     <tr th:each="appoinment:${appointments}">
         <td th:text="${appoinment.id}">Id</td>
         <td th:text="${appoinment.data}">Date</td>
-        <td th:text="${appoinment.department}">Department</td>
-        <td th:text="${appoinment.doctor}">Doctor</td>
-        <td th:text="${appoinment.patient}">Patient</td>
+        <td>
+            <form th:method="POST"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/assignDepartmentToAppointment(appointmentId=${appoinment.getId()},hospitalId=${hospital})}">
+                <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        th:object="${department}" th:field="*{id}">
+                    <option th:each="department:${departments}"
+                            th:value="${department.id}"
+                            th:text="${department.name}"></option>
+                </select>
+                <input type="submit" value="submit"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="POST"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/assignDoctor(appointmentId=${appoinment.getId()},hospitalId=${hospital})}">
+                <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        th:object="${doctor}" th:field="*{id}">
+                    <option th:each="doctor:${doctors}"
+                            th:value="${doctor.id}"
+                            th:text="${doctor.firstName}"></option>
+                </select>
+                <input type="submit" value="submit"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="POST"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/assignPatient(appointmentId=${appoinment.getId()},hospitalId=${hospital})}">
+                <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        th:object="${patient}" th:field="*{id}">
+                    <option th:each="patient:${patients}"
+                            th:value="${patient.id}"
+                            th:text="${patient.firstName}"></option>
+                </select>
+                <input type="submit" value="submit"/>
+            </form>
+        </td>
 
 
         <div><td> <a th:method="DELETE" th:href="@{/appointments/updateAppointment/{hospitalId}/{id}(id=${appoinment.id},hospitalId=${hospital})}">

@@ -1,15 +1,17 @@
 package peaksoft.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.model.Department;
 import peaksoft.model.Doctor;
 import peaksoft.service.DepartmentService;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
     @Autowired
@@ -17,22 +19,26 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/departments/{id}")
+    @GetMapping("/{id}")
     public String getAllDepartment(@PathVariable Long id, Model model){
         model.addAttribute("departments",departmentService.getAllDepartment(id));
         model.addAttribute("hospital",id);
         return "/department/departments";
     }
 
-    @GetMapping("/departments/{id}/addDepartment")
+    @GetMapping("/{id}/addDepartment")
     public String addDepartment(Model model,@PathVariable Long id){
         model.addAttribute("department",new Department());
         model.addAttribute("hospital",id);
         return "/department/addDepartment" ;
     }
     @PostMapping("/{id}/saveDepartment")
-    public String saveDepartment(@ModelAttribute("department") Department department,
+    public String saveDepartment(@ModelAttribute("department") @Valid Department department, BindingResult bindingResult,
                              @PathVariable Long id) {
+        if (bindingResult.hasErrors()){
+            return "/department/addDepartment";
+
+        }
         departmentService.addDepartment(department,id);
         return "redirect:/departments/"+id;
     }

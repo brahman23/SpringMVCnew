@@ -1,9 +1,12 @@
 package peaksoft.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +24,10 @@ public class Hospital {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hospital_seq")
     @SequenceGenerator(name = "hospital_seq", sequenceName = "hospital_seq", allocationSize = 2)
     private Long id;
-
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 3,max = 20,message = "Name should be between 3 and 20 characters")
     private String name;
-
+    @NotEmpty(message = "Address should not be empty")
     private String address;
 
 

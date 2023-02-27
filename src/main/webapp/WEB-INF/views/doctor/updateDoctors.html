@@ -18,17 +18,17 @@
             method="post">
 
         <input type="hidden" name="id" th:field="*{id}">
-        <input type="text" name="firstName" th:field="*{firstName}" placeholder="FirstName">
+        <input type="text"  required name="firstName" th:field="*{firstName}" placeholder="FirstName">
         <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>
         <br><br>
-        <input type="text" name="locatedCountry" th:field="*{lastName}" placeholder="Located Country">
-        <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Address Error</div>
+        <input type="text" required name="lastName" th:field="*{lastName}" placeholder="lastName">
+        <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</div>
         <br><br>
-        <input type="text" name="locatedCountry" th:field="*{position}" placeholder="Located Country">
-        <div style="color: red" th:if="${#fields.hasErrors('position')}" th:errors="*{position}">Address Error</div>
+        <input type="text" required name="position" th:field="*{position}" placeholder="position">
+        <div style="color: red" th:if="${#fields.hasErrors('position')}" th:errors="*{position}">Position Error</div>
         <br><br>
-        <input type="text" name="locatedCountry" th:field="*{email}" placeholder="Located Country">
-        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Address Error</div>
+        <input type="email" required name="email" th:field="*{email}" placeholder="email">
+        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
         <br><br>
         <input type="submit" value="Add">
 
